@@ -20,17 +20,23 @@
 ##create required users
 #if ! md5sum -c /privatepersist/k8s-users-checksum > /dev/null 2>&1; then
 #  rm /var/lib/samba/private/passdb.tdb
-  if [ -s /secrets/create-users ]; then
-    for line in $(cat /secrets/create-users); do
-      USER=$(echo $line | cut -f1 -d:)
-      PASS=$(echo $line | cut -f2 -d:)
-      UID=$(echo $line | cut -f3 -d:)
-      adduser -s /sbin/nologin -h /home/samba --uid $UID -H -D $USER
-      yes "$PASS" | smbpasswd -a $USER
-    done
-  fi
+#  if [ -s /secrets/create-users ]; then
+#    for line in $(cat /secrets/create-users); do
+#      USER=$(echo $line | cut -f1 -d:)
+#      PASS=$(echo $line | cut -f2 -d:)
+#      UID=$(echo $line | cut -f3 -d:)
+#      adduser -s /sbin/nologin -h /home/samba --uid $UID -H -D $USER
+#      yes "$PASS" | smbpasswd -a $USER
+#    done
+#  fi
 #  md5sum /secrets/create-users > /privatepersist/k8s-users-checksum
 #fi
+
+FILE=/bootstrap.sh
+if test -f "$FILE"; then
+    echo "Running $FILE"
+    source $FILE
+fi
 
 # bug where smbd stops on "end of input"
 ionice -c 3 smbd --foreground --log-stdout < /dev/null
