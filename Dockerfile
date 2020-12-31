@@ -5,8 +5,9 @@ RUN apk add --no-cache \
     samba-client \
     samba-server
 
-ADD k8s.sh /k8s.sh
+ADD init.sh /init.sh
+RUN chmod +x /init.sh
 
 EXPOSE 445/tcp
 
-CMD ["/k8s.sh"]
+CMD ["/init.sh"]
