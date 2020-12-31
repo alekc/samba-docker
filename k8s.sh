@@ -24,7 +24,8 @@
     for line in $(cat /secrets/create-users); do
       USER=$(echo $line | cut -f1 -d:)
       PASS=$(echo $line | cut -f2 -d:)
-      adduser -s /sbin/nologin -h /home/samba -H -D $USER
+      UID=$(echo $line | cut -f3 -d:)
+      adduser -s /sbin/nologin -h /home/samba --uid $UID -H -D $USER
       yes "$PASS" | smbpasswd -a $USER
     done
 #  fi
