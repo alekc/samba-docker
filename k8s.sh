@@ -28,7 +28,7 @@
       adduser -s /sbin/nologin -h /home/samba --uid $UID -H -D $USER
       yes "$PASS" | smbpasswd -a $USER
     done
-#  fi
+  fi
 #  md5sum /secrets/create-users > /privatepersist/k8s-users-checksum
 #fi
 
