@@ -14,7 +14,7 @@ jobs:
           images: alekcander/samba-docker
           tag-sha: true
           tag-semver: |
-            {{version}}
+            v{{version}}
             v{{major}}.x
             v{{major}}.{{minor}}.x
       - name: Set up QEMU
