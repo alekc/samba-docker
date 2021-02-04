@@ -1,0 +1,35 @@
+#======================= Global Settings =====================================
+[global]
+   workgroup = {{ global.workgroup | default("MyGroup") }}
+   server string = {{ global.server | default("Samba Server") }}
+
+   min protocol = {{ global.minProtocol | default("SMB2") }}
+   ea support = {{ global.eaSupport | default("yes") }}
+   vfs objects = {{ global.vfsObjects | default("fruit streams_xattr") }}
+#
+{%- for fruit in global.fruits %}
+   {{ fruit -}}
+{% endfor %}
+#
+   log file = /usr/local/samba/var/log.%m
+   max log size = 50
+#============================ Share Definitions ==============================
+{%- for share in shares %}
+[{{ share.name }}]
+   comment = {{ share.comment }}
+   browseable = {{ share.browseable | default("no") }}
+   writeable = {{ share.writeable | default("no") }}
+{%- if share.guestAllowed == "yes" %}
+   guest ok = yes
+{%- endif %}
+{%- if share.writeList == "yes" %}
+   write list = {{ share.writeList }}
+{%- endif %}
+{%- if share.validUsers is defined and share.validUsers|length > 0 %}
+   valid users = {{ share.validUsers | join (" ") }}
+{%- endif %}
+{%- if share.createMask is defined %}
+   create mask = {{ share.createMask }}
+{%- endif %}
+   path = {{ share.path }}
+{% endfor %}
