@@ -1,4 +1,4 @@
-FROM alpine:3.13.5 AS s6-alpine
+FROM alpine:edge AS s6-alpine
 LABEL maintainer="Alexander Chernov"
 
 ARG S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-amd64.tar.gz
@@ -16,7 +16,7 @@ RUN apk upgrade --update --no-cache \
     && rm /tmp/s6overlay.tar.gz
 
 # Init
-ENTRYPOINT [ "/init" ]
+CMD [ "/init" ]
 
 FROM s6-alpine
 

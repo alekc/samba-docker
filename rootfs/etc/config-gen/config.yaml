@@ -25,6 +25,8 @@ global:
     - fruit:zero_file_id = yes
     - fruit:wipe_intentionally_left_blank_rfork = yes
     - fruit:delete_empty_adfiles = yes
+  # any further global options you want to put into the script
+  extra: []
 
 shares:
   - name: "home"
@@ -38,6 +40,7 @@ shares:
       - "foouser"
       - "fred"
     createMask: "0765"
+    extra: []
 
 users:
   - name: "foouser"
