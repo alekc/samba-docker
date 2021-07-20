@@ -40,7 +40,8 @@ shares:
       - "foouser"
       - "fred"
     createMask: "0765"
-    extra: []
+    extra:
+      - "foo = bar"
 
 users:
   - name: "foouser"

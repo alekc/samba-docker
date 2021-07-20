@@ -25,16 +25,18 @@ def render_init_config():
         print(f"File {err} not found")
         exit(2)
 
-    if len(config["users"]) > 0:
-        for user in config["users"]:
-            user_add(user)
-
     logging.info("writing smb.conf")
     with open(file="/etc/samba/smb.conf", mode="w") as f:
         if not f.writable():
             logging.error("smb.conf is not writable")
             exit(4)
         f.write(int_template.render(config))
+
+    if len(config["users"]) > 0:
+        for user in config["users"]:
+            user_add(user)
+
+
 
 
 def user_add(user_config):
