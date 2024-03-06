@@ -2,19 +2,18 @@ import subprocess
 import sys
 import logging
 import yaml
-import jinja2
 import pwd
-from jinja2 import FileSystemLoader
+from jinja2 import FileSystemLoader, Environment, TemplateNotFound
 
 
 def render_init_config():
-    env = jinja2.Environment(
+    env = Environment(
         loader=FileSystemLoader('./'),
     )
     # load template
     try:
-        int_template = env.get_template(f"{sys.path[0]}/smb.conf.j2")
-    except jinja2.TemplateNotFound as err:
+        int_template = env.get_template("smb.conf.j2")
+    except TemplateNotFound as err:
         print(f" The template {err} does not exist")
         exit(1)
 
@@ -35,8 +34,6 @@ def render_init_config():
     if len(config["users"]) > 0:
         for user in config["users"]:
             user_add(user)
-
-
 
 
 def user_add(user_config):
@@ -80,6 +77,7 @@ def exec_cmd(cmd, input_arg=None):
         exit(3)
 
     return output
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)

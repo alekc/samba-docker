@@ -1,29 +1,22 @@
-FROM alpine:edge AS s6-alpine
+FROM alpine:edge
+
+ENV S6_OVERLAY_VERSION="3.1.6.2"
 LABEL maintainer="Alexander Chernov"
 
-ARG S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-amd64.tar.gz
-ENV S6_OVERLAY_RELEASE=${S6_OVERLAY_RELEASE}
-
-ADD rootfs /
-
-# s6 overlay Download
-ADD ${S6_OVERLAY_RELEASE} /tmp/s6overlay.tar.gz
-
-# Build and some of image configuration
-RUN apk upgrade --update --no-cache \
-    && rm -rf /var/cache/apk/* \
-    && tar xzf /tmp/s6overlay.tar.gz -C / \
-    && rm /tmp/s6overlay.tar.gz
-
-# Init
-CMD [ "/init" ]
-
-FROM s6-alpine
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
+RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz /tmp
+RUN tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
 
 RUN apk add --no-cache \
     samba-common-tools \
     samba-client \
     samba-server \
-    python3 py3-jinja2 py3-yaml
+    python3 py3-jinja2 py3-yaml py-pip
+
+ADD rootfs /
 
 EXPOSE 445/tcp
+
+# Init
+ENTRYPOINT ["/init"]

@@ -11,12 +11,16 @@
    {{ fruit -}}
 {% endfor %}
 #
-   {%- for extraOpt in global.extra %}
-      {{ extraOpt -}}
-   {% endfor %}
+{%- for extraOpt in global.extra %}
+  {{ extraOpt -}}
+{% endfor %}
    log file = /usr/local/samba/var/log.%m
    log level = {{ global.logLevel | default("1") }}
    max log size = 50
+
+{% if (extra_config is defined) and extra_config %}
+{{ extra_config }}
+{% endif %}
 #============================ Share Definitions ==============================
 {%- for share in shares %}
 [{{ share.name }}]

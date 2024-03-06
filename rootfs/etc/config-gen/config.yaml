@@ -27,6 +27,9 @@ global:
     - fruit:delete_empty_adfiles = yes
   # any further global options you want to put into the script
   extra: []
+extra_config: |
+  [TimeMachineBackup]
+  fruit:time machine = yes
 
 shares:
   - name: "home"
