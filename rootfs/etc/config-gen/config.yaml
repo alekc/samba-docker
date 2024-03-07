@@ -10,7 +10,7 @@ global:
   #Apple extensions require support for extended attributes(xattr) - defaults to yes in Samba 4.9+:
   eaSupport: "yes"
   # Load in modules (order is critical!) and enable AAPL extensions:
-  vfsObjects: "fruit streams_xattr"
+  vfsObjects: "catia fruit streams_xattr"
   # https://www.samba.org/samba/docs/current/man-html/vfs_fruit.8.html
   fruits:
     - fruit:aapl = yes
