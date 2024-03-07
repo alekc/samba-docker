@@ -8,7 +8,7 @@ from jinja2 import FileSystemLoader, Environment, TemplateNotFound
 
 def render_init_config():
     env = Environment(
-        loader=FileSystemLoader('./'),
+        loader=FileSystemLoader('/etc/config-gen/'),
     )
     # load template
     try:
