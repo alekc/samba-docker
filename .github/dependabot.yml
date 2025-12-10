@@ -10,13 +10,11 @@ updates:
     # Allow updating the base image tag in Dockerfile
     ignore: []
 
-  - package-ecosystem: "pip"
+  - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
     labels:
       - "dependencies"
+      - "github-actions"
     open-pull-requests-limit: 5
-    # Keeps Python deps in requirements.txt up to date
-    ignore: []
-
