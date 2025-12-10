@@ -11,6 +11,3 @@ This container permits you to perform bootstrapping logic by mounting a bash fil
 * `v1.x`: release version, should not bring any breaking changes
 * `v1.0.x`: minor versions, new features introduced, no breaking changes
 * `v1.0.0`: minor patches, no new features.
-
-## Thanks
-Inspired by https://github.com/iMartyn/helm-samba4
