@@ -14,14 +14,14 @@ def render_init_config():
     try:
         int_template = env.get_template("smb.conf.j2")
     except TemplateNotFound as err:
-        print(f" The template {err} does not exist")
+        print(f"Template not found: {err}")
         exit(1)
 
     try:
         with open(file=f"{sys.path[0]}/config.yaml") as f:
-            config = yaml.load(f, Loader=yaml.FullLoader)
+            config = yaml.load(f, Loader=yaml.SafeLoader)
     except FileNotFoundError as err:
-        print(f"File {err} not found")
+        print(f"File {err.filename} not found")
         exit(2)
 
     logging.info("writing smb.conf")

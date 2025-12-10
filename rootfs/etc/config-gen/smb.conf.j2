@@ -30,7 +30,7 @@
 {%- if share.guestAllowed == "yes" %}
    guest ok = yes
 {%- endif %}
-{%- if share.writeList == "yes" %}
+{%- if share.writeList is defined and share.writeList|length > 0 %}
    write list = {{ share.writeList }}
 {%- endif %}
 {%- if share.validUsers is defined and share.validUsers|length > 0 %}
