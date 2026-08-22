@@ -14,7 +14,7 @@ RUN apk add --no-cache \
     samba-common-tools=4.22.10-r0 \
     samba-client=4.22.10-r0 \
     samba-server=4.22.10-r0 \
-    python3=3.12.12-r0 \
+    python3=3.12.14-r0 \
     py3-jinja2=3.1.6-r0 \
     py3-yaml=6.0.3-r0
 
