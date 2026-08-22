@@ -11,7 +11,7 @@ This container permits you to perform bootstrapping logic by mounting a bash fil
 
 ### Using environment variables
 
-Any `${VAR}` in `config.yaml` is replaced with that environment variable before the YAML is parsed. This keeps secrets out of the config file itself, which usually lives in a git repository or a Kubernetes ConfigMap.
+Any `${VAR}` in a string value of `config.yaml` is replaced with that environment variable. This keeps secrets out of the config file itself, which usually lives in a git repository or a Kubernetes ConfigMap.
 
 ```yaml
 # config.yaml
@@ -42,6 +42,7 @@ env:
 Two things worth knowing:
 
 * Only the braced form `${VAR}` is substituted. A bare `$VAR` is left alone, so a password containing a literal `$` is safe.
+* Expansion happens **after** the YAML is parsed, so the value is inserted into the parsed structure rather than the document text. A password can therefore contain quotes, backslashes, newlines or `#` without breaking the parse or being altered. Run `python3 tests/test_expand_env.py` to check this.
 * If the config references a variable that is not set, the container exits with code `5` and names the variable. It deliberately does not fall through, because an unexpanded placeholder would be accepted as a literal password and would then fail authentication in a way that is tedious to trace.
 
 ## Tags
