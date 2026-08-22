@@ -1,9 +1,26 @@
+import os
+import re
 import subprocess
 import sys
 import logging
 import yaml
 import pwd
 from jinja2 import FileSystemLoader, Environment, TemplateNotFound
+
+
+def expand_env(raw):
+    """Expand ${VAR} references in the raw config against the environment.
+
+    Fails on any unset variable: leaving the placeholder in place would turn a
+    typo into a literal password, which samba accepts happily but which never
+    matches what the client sends.
+    """
+    missing = sorted({m for m in re.findall(r"\$\{(\w+)\}", raw)
+                      if m not in os.environ})
+    if missing:
+        print(f"config.yaml references unset env vars: {', '.join(missing)}")
+        exit(5)
+    return re.sub(r"\$\{(\w+)\}", lambda m: os.environ[m.group(1)], raw)
 
 
 def render_init_config():
@@ -19,7 +36,7 @@ def render_init_config():
 
     try:
         with open(file=f"{sys.path[0]}/config.yaml") as f:
-            config = yaml.load(f, Loader=yaml.SafeLoader)
+            config = yaml.load(expand_env(f.read()), Loader=yaml.SafeLoader)
     except FileNotFoundError as err:
         print(f"File {err.filename} not found")
         exit(2)
