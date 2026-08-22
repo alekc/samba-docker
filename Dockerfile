@@ -1,6 +1,9 @@
 FROM alpine:3.23.0
 
 ENV S6_OVERLAY_VERSION="3.2.1.0"
+# Without this a failing cont-init script is only logged, and samba comes up
+# serving a default smb.conf with no shares and no users. Fail the container.
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 LABEL maintainer="Alexander Chernov"
 
 RUN apk add --no-cache curl && \
