@@ -1,9 +1,44 @@
+import os
+import re
 import subprocess
 import sys
 import logging
 import yaml
 import pwd
 from jinja2 import FileSystemLoader, Environment, TemplateNotFound
+
+
+_VAR_RE = r"\$\{(\w+)\}"
+
+
+def expand_env(config):
+    """Expand ${VAR} references in every string value of the parsed config.
+
+    Expansion runs after YAML parsing on purpose. Substituting into the raw text
+    would let a value containing a quote, backslash or newline break the parse or
+    silently alter the password it was meant to supply.
+    """
+    missing = set()
+
+    def walk(value):
+        if isinstance(value, str):
+            missing.update(n for n in re.findall(_VAR_RE, value)
+                           if n not in os.environ)
+            return re.sub(_VAR_RE,
+                          lambda m: os.environ.get(m.group(1), m.group(0)),
+                          value)
+        if isinstance(value, dict):
+            return {k: walk(v) for k, v in value.items()}
+        if isinstance(value, list):
+            return [walk(v) for v in value]
+        return value
+
+    expanded = walk(config)
+    if missing:
+        print("config.yaml references unset env vars: "
+              f"{', '.join(sorted(missing))}")
+        exit(5)
+    return expanded
 
 
 def render_init_config():
@@ -19,7 +54,7 @@ def render_init_config():
 
     try:
         with open(file=f"{sys.path[0]}/config.yaml") as f:
-            config = yaml.load(f, Loader=yaml.SafeLoader)
+            config = expand_env(yaml.load(f, Loader=yaml.SafeLoader))
     except FileNotFoundError as err:
         print(f"File {err.filename} not found")
         exit(2)
