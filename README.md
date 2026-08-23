@@ -49,7 +49,11 @@ Two things worth knowing:
 
 Images are published to `ghcr.io/alekc/samba-docker`. Releases used to go to Docker Hub; that stopped after `v1.0.0` and everything now lands in one place.
 
-* `latest`: daily build, will have the latest version of the alpine and samba package, however can break at any moment. Use at your own risk
-* `v1.x`: release version, should not bring any breaking changes
-* `v1.0.x`: minor versions, new features introduced, no breaking changes
-* `v1.0.0`: minor patches, no new features.
+Every tag below is produced by the same release build, so they are all immutable except `latest`, which moves.
+
+* `latest`: the most recent release. Previously a daily build of unpinned packages; the Dockerfile pins alpine, samba, python and s6, so a scheduled rebuild produced an identical image and that workflow was removed.
+* `v1.x`: newest release in that major series, no breaking changes within it
+* `v1.1.x`: newest patch in that minor series, no new features within it
+* `v1.1.0`: one exact release, never moves
+
+Pin `v1.1.0` for anything you care about. Pull requests also publish `pr-N` for testing, but those are mutable and are cleaned up when the PR closes.
