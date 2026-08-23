@@ -47,6 +47,8 @@ Two things worth knowing:
 
 ## Tags
 
+Images are published to `ghcr.io/alekc/samba-docker`. Releases used to go to Docker Hub; that stopped after `v1.0.0` and everything now lands in one place.
+
 * `latest`: daily build, will have the latest version of the alpine and samba package, however can break at any moment. Use at your own risk
 * `v1.x`: release version, should not bring any breaking changes
 * `v1.0.x`: minor versions, new features introduced, no breaking changes
