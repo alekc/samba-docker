@@ -1,4 +1,4 @@
-FROM alpine:3.23.0
+FROM alpine:3.24.3
 
 ENV S6_OVERLAY_VERSION="3.2.1.0"
 # Without this a failing cont-init script is only logged, and samba comes up
